@@ -175,7 +175,7 @@ function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
         />
 
         {/* ── Layer 2: Gradient overlay for text readability ── */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808]/70 via-[#080808]/30 to-transparent md:hidden" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808] via-[#080808]/80 to-transparent md:hidden" />
         <div
           className="pointer-events-none absolute inset-0 hidden md:block"
           style={{
@@ -346,9 +346,13 @@ const hotspots = [
 ];
 
 function Hotspot({ h, prefersReduced, hotspotScale, hotspotOpacity }: any) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <motion.div
-      className="group absolute z-10"
+      className="absolute z-10"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
       style={{
         left: `${h.x}%`,
         top: `${h.y}%`,
@@ -361,22 +365,35 @@ function Hotspot({ h, prefersReduced, hotspotScale, hotspotOpacity }: any) {
             }),
       }}
     >
-      <Link
-        to={h.href}
+      <button
         aria-label={h.title}
-        className="grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_0_14px_oklch(0.6_0.25_25/0.75)] ring-2 ring-background transition-transform group-hover:scale-110 focus:outline-none"
+        onClick={() => setIsOpen(!isOpen)}
+        className="grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_0_14px_oklch(0.6_0.25_25/0.75)] ring-2 ring-background transition-transform hover:scale-110 focus:outline-none"
+        style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }}
       >
         <Plus className="h-4 w-4" />
-      </Link>
+      </button>
       
-      <div className="pointer-events-none absolute left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-background/95 px-3 py-1.5 text-center opacity-0 backdrop-blur shadow-xl transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-1">
-        <div className="font-display text-xs text-bone">
-          {h.title}
-        </div>
-        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground flex items-center justify-center gap-1 mt-0.5">
-          {h.sub} <ArrowUpRight className="h-2.5 w-2.5" />
-        </div>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -5, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -5, x: "-50%" }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-1/2 mt-2 whitespace-nowrap rounded-md border border-border bg-background/95 px-3 py-1.5 text-center backdrop-blur shadow-xl hover:border-primary/50 transition-colors"
+          >
+            <Link to={h.href} className="flex flex-col items-center group/link">
+              <div className="font-display text-xs text-bone group-hover/link:text-primary transition-colors">
+                {h.title}
+              </div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground flex items-center gap-1 group-hover/link:text-primary/80 transition-colors mt-0.5">
+                {h.sub} <ArrowUpRight className="h-2.5 w-2.5" />
+              </div>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
