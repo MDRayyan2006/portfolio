@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=1280" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1" },
       { title: "Rayyan Mohammed — AI Engineer · Developer · Builder" },
       { name: "description", content: "Portfolio of Rayyan Mohammed — Computer Science undergraduate building AI systems, multi-agent pipelines, and full-stack products." },
       { property: "og:title", content: "Rayyan Mohammed — AI Engineer · Developer · Builder" },

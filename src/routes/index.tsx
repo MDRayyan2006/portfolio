@@ -171,12 +171,13 @@ function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
           width={1500}
           height={1024}
           style={prefersReduced ? {} : { y: portraitY }}
-          className="pointer-events-none absolute inset-0 h-full w-full object-contain object-right-bottom"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_100%] md:object-contain md:object-right-bottom"
         />
 
         {/* ── Layer 2: Gradient overlay for text readability ── */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808] via-[#080808]/80 to-transparent md:hidden" />
         <div
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 hidden md:block"
           style={{
             background:
               "linear-gradient(to right, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.88) 22%, rgba(8,8,8,0.6) 40%, rgba(8,8,8,0.15) 55%, transparent 70%)",
@@ -194,7 +195,7 @@ function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
 
         {/* ── Text content — staggered entrance ── */}
         <motion.div
-          className="relative z-10 mx-auto max-w-[1400px] px-6 py-10 md:pl-20 lg:px-10 lg:py-16"
+          className="relative z-10 mx-auto max-w-[1400px] px-6 pt-32 pb-10 md:pt-10 md:pl-20 lg:px-10 lg:py-16 flex h-full flex-col justify-start md:justify-center"
           style={prefersReduced ? {} : { y: textY }}
         >
           <motion.div
