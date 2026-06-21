@@ -1,0 +1,372 @@
+@import "tailwindcss" source(none);
+@source "../src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-panel: var(--panel);
+  --color-bone: var(--bone);
+  --color-blood: var(--blood);
+  --color-blood-glow: var(--blood-glow);
+  --color-ink: var(--ink);
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.25rem;
+}
+
+/* ─── Cyberpunk Palette ─── */
+:root {
+  --background: #0a0a0a;
+  --foreground: #f0ece6;
+  --card: #111111;
+  --card-foreground: #f0ece6;
+  --popover: #111111;
+  --popover-foreground: #f0ece6;
+  --primary: #ff2a00;
+  --primary-foreground: #ffffff;
+  --secondary: #161616;
+  --secondary-foreground: #f0ece6;
+  --muted: #1a1a1a;
+  --muted-foreground: #777777;
+  --accent: #ff3d00;
+  --accent-foreground: #ffffff;
+  --destructive: #ff2a00;
+  --destructive-foreground: #ffffff;
+  --border: #222222;
+  --input: #1a1a1a;
+  --ring: #ff2a00;
+  --panel: #0e0e0e;
+  --bone: #f0ece6;
+  --blood: #ff2a00;
+  --blood-glow: #ff5500;
+  --ink: #050505;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background: #ff2a0044;
+    color: #fff;
+  }
+}
+
+/* ─── Background Textures ─── */
+.bg-grain {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 42, 0, 0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+.bg-noise {
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(255, 42, 0, 0.12), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(255, 61, 0, 0.08), transparent 60%);
+}
+.scratch-divider {
+  background:
+    linear-gradient(90deg, transparent, var(--blood) 20%, var(--blood-glow) 50%, var(--blood) 80%, transparent);
+  height: 1px;
+  opacity: 0.5;
+}
+
+/* ─── Chiseled Title Effects ─── */
+.title-stone {
+  color: #eae6df;
+  text-shadow:
+    0 1px 0 #666,
+    0 2px 0 #444,
+    0 4px 12px rgba(0,0,0,0.6);
+  -webkit-text-stroke: 1px rgba(60, 60, 60, 0.4);
+}
+.title-blood {
+  color: var(--blood);
+  text-shadow:
+    0 0 20px rgba(255, 42, 0, 0.6),
+    0 0 60px rgba(255, 42, 0, 0.3),
+    0 2px 0 #991a00,
+    0 4px 14px rgba(0,0,0,0.7);
+  -webkit-text-stroke: 1px rgba(153, 26, 0, 0.5);
+}
+
+/* ─── Glassmorphism Utilities ─── */
+.glass {
+  background: rgba(17, 17, 17, 0.65);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.glass-card {
+  background: rgba(17, 17, 17, 0.5);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 42, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card:hover {
+  border-color: rgba(255, 42, 0, 0.35);
+  box-shadow:
+    0 0 30px rgba(255, 42, 0, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+/* ─── Glow Effects ─── */
+.glow-red {
+  box-shadow:
+    0 0 15px rgba(255, 42, 0, 0.4),
+    0 0 45px rgba(255, 42, 0, 0.15);
+}
+.glow-red-strong {
+  box-shadow:
+    0 0 20px rgba(255, 42, 0, 0.5),
+    0 0 60px rgba(255, 42, 0, 0.25),
+    0 0 100px rgba(255, 42, 0, 0.1);
+}
+.glow-text-red {
+  text-shadow: 0 0 20px rgba(255, 42, 0, 0.5), 0 0 40px rgba(255, 42, 0, 0.2);
+}
+.neon-border {
+  border: 1px solid rgba(255, 42, 0, 0.4);
+  box-shadow:
+    inset 0 0 12px rgba(255, 42, 0, 0.08),
+    0 0 12px rgba(255, 42, 0, 0.15);
+}
+.neon-border:hover {
+  border-color: rgba(255, 42, 0, 0.65);
+  box-shadow:
+    inset 0 0 20px rgba(255, 42, 0, 0.12),
+    0 0 25px rgba(255, 42, 0, 0.3);
+}
+
+/* ─── Badge Styles ─── */
+.badge-cyber {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border: 1px solid rgba(255, 42, 0, 0.5);
+  background: rgba(255, 42, 0, 0.1);
+  color: #ff5500;
+  box-shadow: 0 0 12px rgba(255, 42, 0, 0.2);
+  transition: all 0.3s ease;
+}
+.badge-cyber:hover {
+  background: rgba(255, 42, 0, 0.18);
+  box-shadow: 0 0 20px rgba(255, 42, 0, 0.35);
+}
+
+/* ─── Orbital animations for the solar-system skills diagram ─── */
+@keyframes orbit-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes orbit-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 25px rgba(255,42,0,0.5), 0 0 60px rgba(255,42,0,0.25); }
+  50% { box-shadow: 0 0 50px rgba(255,42,0,0.8), 0 0 100px rgba(255,42,0,0.4); }
+}
+.animate-orbit-slow { animation: orbit-slow 60s linear infinite; transform-origin: center; }
+.animate-orbit-med { animation: orbit-slow 40s linear infinite; transform-origin: center; }
+.animate-orbit-fast { animation: orbit-reverse 25s linear infinite; transform-origin: center; }
+.animate-pulse-glow { animation: pulse-glow 3.5s ease-in-out infinite; }
+.counter-spin { animation: orbit-reverse 60s linear infinite; }
+.counter-spin-med { animation: orbit-reverse 40s linear infinite; }
+.counter-spin-fast { animation: orbit-slow 25s linear infinite; }
+
+/* ─── Floating & Shimmer ─── */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float { animation: float-soft 6s ease-in-out infinite; }
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-6px) rotate(0.5deg); }
+  66% { transform: translateY(3px) rotate(-0.5deg); }
+}
+.animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+
+@keyframes shimmer-ring {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.animate-ring { animation: shimmer-ring 2.4s ease-in-out infinite; }
+
+/* ─── Particle Twinkle ─── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+
+/* ─── Gradient Line Animation ─── */
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-flow 4s ease infinite;
+}
+
+/* ─── Border Glow Animation ─── */
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(255, 42, 0, 0.2); }
+  50% { border-color: rgba(255, 42, 0, 0.6); }
+}
+.animate-border-glow { animation: border-glow 3s ease-in-out infinite; }
+
+/* ─── Starfield ─── */
+.starfield {
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 100, 50, 0.6) 50%, transparent 60%),
+    radial-gradient(1px 1px at 28% 72%, rgba(255, 100, 50, 0.4) 50%, transparent 60%),
+    radial-gradient(1px 1px at 47% 32%, rgba(255, 255, 255, 0.5) 50%, transparent 60%),
+    radial-gradient(1px 1px at 63% 84%, rgba(255, 100, 50, 0.5) 50%, transparent 60%),
+    radial-gradient(1px 1px at 82% 12%, rgba(255, 255, 255, 0.4) 50%, transparent 60%),
+    radial-gradient(1px 1px at 92% 56%, rgba(255, 100, 50, 0.55) 50%, transparent 60%),
+    radial-gradient(1px 1px at 7% 88%, rgba(255, 100, 50, 0.35) 50%, transparent 60%);
+}
+
+/* ─── Ambient Red Background Glow ─── */
+.ambient-red {
+  position: relative;
+}
+.ambient-red::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 42, 0, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─── Plus Icon Interactive Style ─── */
+.plus-icon {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.plus-icon:hover {
+  transform: scale(1.15);
+  box-shadow:
+    0 0 20px rgba(255, 42, 0, 0.7),
+    0 0 40px rgba(255, 42, 0, 0.3);
+}
+
+/* ─── Timeline Glow Line ─── */
+@keyframes timeline-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+.timeline-marker {
+  animation: timeline-pulse 2.5s ease-in-out infinite;
+}
+
+/* ─── Scrollbar Styling ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #ff2a0044;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff2a0088;
+}
+
+/* ─── HUD Scanline Effect ─── */
+.hud-scanline {
+  position: relative;
+}
+.hud-scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 42, 0, 0.03) 2px,
+    rgba(255, 42, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── HUD Terminal Cursor Blink ─── */
+@keyframes terminal-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.terminal-cursor::after {
+  content: "█";
+  animation: terminal-blink 0.8s step-end infinite;
+  color: var(--primary);
+}
+
+/* ─── HUD Corner Brackets ─── */
+.hud-bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 2;
+}
+.hud-bracket--tl { top: 0; left: 0; border-top: 1px solid rgba(255,42,0,0.5); border-left: 1px solid rgba(255,42,0,0.5); }
+.hud-bracket--tr { top: 0; right: 0; border-top: 1px solid rgba(255,42,0,0.5); border-right: 1px solid rgba(255,42,0,0.5); }
+.hud-bracket--bl { bottom: 0; left: 0; border-bottom: 1px solid rgba(255,42,0,0.5); border-left: 1px solid rgba(255,42,0,0.5); }
+.hud-bracket--br { bottom: 0; right: 0; border-bottom: 1px solid rgba(255,42,0,0.5); border-right: 1px solid rgba(255,42,0,0.5); }
+
+/* ─── HUD Sweep Animation ─── */
+@keyframes hud-sweep {
+  0% { transform: translateY(-100%); opacity: 0.6; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
