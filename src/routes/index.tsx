@@ -171,7 +171,7 @@ function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
           width={1500}
           height={1024}
           style={prefersReduced ? {} : { y: portraitY }}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_100%] md:object-contain md:object-right-bottom"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_100%] md:object-contain md:object-right-bottom translate-y-12 md:translate-y-0"
         />
 
         {/* ── Layer 2: Gradient overlay for text readability ── */}
@@ -195,7 +195,7 @@ function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
 
         {/* ── Text content — staggered entrance ── */}
         <motion.div
-          className="relative z-10 mx-auto max-w-[1400px] px-6 pt-32 pb-10 md:pt-10 md:pl-20 lg:px-10 lg:py-16 flex h-full flex-col justify-start md:justify-center"
+          className="relative z-10 mx-auto max-w-[1400px] px-6 pt-20 pb-10 md:pt-10 md:pl-20 lg:px-10 lg:py-16 flex h-full flex-col justify-start md:justify-center"
           style={prefersReduced ? {} : { y: textY }}
         >
           <motion.div
