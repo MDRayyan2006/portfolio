@@ -175,7 +175,7 @@ function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
         />
 
         {/* ── Layer 2: Gradient overlay for text readability ── */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808] via-[#080808]/80 to-transparent md:hidden" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808]/70 via-[#080808]/30 to-transparent md:hidden" />
         <div
           className="pointer-events-none absolute inset-0 hidden md:block"
           style={{
