@@ -23,9 +23,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { SolarSkills } from "@/components/SolarSkills";
 import { HudBootSequence } from "@/components/HudBootSequence";
 import { HudLevelWrapper } from "@/components/HudLevelWrapper";
-
-import { NeuralCanvas } from "@/components/NeuralCanvas";
-import { TextReveal } from "@/components/TextReveal";
+import { GameCharacter } from "@/components/GameCharacter";
 import { popularSkills } from "@/lib/site-data";
 import heroImg from "@/assets/hero-portrait.png";
 import aboutImg from "@/assets/about-scene.png";
@@ -85,16 +83,30 @@ const staggerContainer: Variants = {
   },
 };
 
+const slideLeft: Variants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0 },
+};
+
+const slideRight: Variants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0 },
+};
+
 /* ════════════════════════════════════════════════════════
    HOME
    ════════════════════════════════════════════════════════ */
 
 function Home() {
+  const [characterVisible, setCharacterVisible] = useState(false);
+
   return (
     <SiteShell>
-      <Hero />
+      <Hero onBootComplete={() => setCharacterVisible(true)} />
       <About />
       <Skills />
+      {/* Game character appears after boot sequence */}
+      <GameCharacter visible={characterVisible} />
     </SiteShell>
   );
 }
@@ -103,7 +115,7 @@ function Home() {
    HERO — Splash background + boot sequence trigger
    ════════════════════════════════════════════════════════ */
 
-function Hero() {
+function Hero({ onBootComplete }: { onBootComplete?: () => void }) {
   const heroRef = useRef<HTMLElement>(null);
   const prefersReduced = useReducedMotion();
 
@@ -117,14 +129,13 @@ function Hero() {
   const portraitY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const splashOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const neuralOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
     <>
       <section
         id="home"
         ref={heroRef}
-        className="relative overflow-hidden"
+        className="relative flex items-center overflow-hidden"
         style={{ minHeight: "calc(100vh - 4rem)", background: "#080808" }}
       >
         {/* ── Layer 0: Splash Red background (parallax) ── */}
@@ -141,7 +152,7 @@ function Hero() {
             alt=""
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover object-right-bottom"
-            style={{ mixBlendMode: "screen", opacity: 0.55 }}
+            style={{ mixBlendMode: "screen", opacity: 0.85 }}
           />
           {/* Glow amplifier */}
           <div
@@ -153,28 +164,6 @@ function Hero() {
           />
         </motion.div>
 
-        {/* ── Layer 0.5: Neural network field — the signature centrepiece ── */}
-        <motion.div
-          className="pointer-events-none absolute inset-0 z-[1]"
-          style={prefersReduced ? {} : { opacity: neuralOpacity }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, ease: "easeOut", delay: 0.3 }}
-        >
-          {/* Full-bleed on mobile, weighted to the right half on desktop */}
-          <div className="absolute inset-0 md:left-[38%]">
-            <NeuralCanvas />
-          </div>
-          {/* Feather the canvas into the copy column on desktop */}
-          <div
-            className="absolute inset-0 hidden md:block"
-            style={{
-              background:
-                "linear-gradient(to right, #080808 0%, rgba(8,8,8,0.85) 30%, transparent 55%)",
-            }}
-          />
-        </motion.div>
-
         {/* ── Layer 1: Portrait (parallax) ── */}
         <motion.img
           src={heroImg}
@@ -182,13 +171,13 @@ function Hero() {
           width={1500}
           height={1024}
           style={prefersReduced ? {} : { y: portraitY }}
-          className="pointer-events-none absolute inset-0 z-[2] h-full w-full object-cover object-[70%_100%] md:object-contain md:object-right-bottom translate-y-12 md:translate-y-0"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[70%_100%] md:object-contain md:object-right-bottom translate-y-12 md:translate-y-0"
         />
 
         {/* ── Layer 2: Gradient overlay for text readability ── */}
-        <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-b from-[#080808]/40 to-transparent md:hidden" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808]/40 to-transparent md:hidden" />
         <div
-          className="pointer-events-none absolute inset-0 z-[3] hidden md:block"
+          className="pointer-events-none absolute inset-0 hidden md:block"
           style={{
             background:
               "linear-gradient(to right, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.88) 22%, rgba(8,8,8,0.6) 40%, rgba(8,8,8,0.15) 55%, transparent 70%)",
@@ -197,7 +186,7 @@ function Hero() {
 
         {/* ── Layer 3: Top/bottom vignette ── */}
         <div
-          className="pointer-events-none absolute inset-0 z-[3]"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               "linear-gradient(to bottom, rgba(8,8,8,0.5) 0%, transparent 12%, transparent 92%, rgba(8,8,8,0.4) 100%)",
@@ -206,11 +195,11 @@ function Hero() {
 
         {/* ── Text content — staggered entrance ── */}
         <motion.div
-          className="relative z-10 mx-auto max-w-[1400px] px-6 pt-20 pb-10 md:pt-10 md:pl-20 lg:px-10 lg:py-16 flex h-full flex-col justify-start md:justify-center"
+          className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:pl-10 lg:pr-8"
           style={prefersReduced ? {} : { y: textY }}
         >
           <motion.div
-            className="flex flex-col justify-center lg:max-w-[48%]"
+            className="flex flex-col lg:max-w-[48%]"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -231,12 +220,27 @@ function Hero() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="mt-3 font-display text-[clamp(3.5rem,9vw,7.5rem)] leading-[0.85] tracking-tight"
             >
-              <TextReveal delay={0.15} duration={1}>
-                <span className="block title-stone">RAYYAN</span>
-              </TextReveal>
-              <TextReveal delay={0.3} duration={1}>
-                <span className="block title-blood">MOHAMMED</span>
-              </TextReveal>
+              <motion.span
+                className="block title-stone"
+                variants={slideLeft}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                RAYYAN
+              </motion.span>
+              <motion.span
+                className="block title-blood"
+                variants={slideLeft}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0.08,
+                }}
+              >
+                MOHAMMED
+              </motion.span>
             </motion.h1>
 
             {/* Role tags */}
@@ -279,7 +283,6 @@ function Hero() {
             >
               <a
                 href="#about"
-                data-magnetic
                 className="group inline-flex items-center gap-2 bg-primary px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-primary-foreground shadow-[0_0_25px_oklch(0.6_0.25_25/0.5)] transition-all hover:shadow-[0_0_38px_oklch(0.6_0.25_25/0.75)]"
               >
                 Explore My Journey
@@ -288,7 +291,6 @@ function Hero() {
               <a
                 href="/resume.pdf"
                 download
-                data-magnetic
                 className="inline-flex items-center gap-2 border border-border bg-card/60 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-foreground hover:border-primary/60 hover:text-primary"
               >
                 Download Resume <Download className="h-3.5 w-3.5" />
@@ -321,31 +323,8 @@ function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* ── Cinematic scroll cue ── */}
-        <motion.div
-          className="pointer-events-none absolute bottom-6 left-1/2 z-[4] hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
-        >
-          <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-foreground/40">
-            Scroll
-          </span>
-          <span className="relative h-12 w-px overflow-hidden bg-foreground/15">
-            <motion.span
-              className="absolute inset-x-0 top-0 h-1/3 bg-primary"
-              animate={{ y: ["-120%", "360%"] }}
-              transition={{
-                duration: 1.9,
-                repeat: Infinity,
-                ease: [0.65, 0, 0.35, 1],
-              }}
-            />
-          </span>
-        </motion.div>
-
         {/* ── HUD Boot Sequence (replaces Play button) ── */}
-        <HudBootSequence />
+        <HudBootSequence onBootComplete={onBootComplete} />
       </section>
       <div className="scratch-divider mx-auto max-w-[90%]" />
     </>
@@ -394,7 +373,7 @@ function Hotspot({ h, prefersReduced, hotspotScale, hotspotOpacity }: any) {
       >
         <Plus className="h-4 w-4" />
       </button>
-      
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -486,7 +465,7 @@ function About() {
               loading="lazy"
               className="w-full h-auto object-cover rounded-xl block"
             />
-            {hotspots.map((h, i) => (
+            {hotspots.map((h) => (
               <Hotspot
                 key={h.title}
                 h={h}
@@ -658,11 +637,11 @@ function SkillDots({
             style={
               isFilled
                 ? {
-                  background: "var(--primary)",
-                  opacity: dotAlpha,
-                  boxShadow: `0 0 6px oklch(0.6 0.25 25 / ${dotAlpha * 0.7})`,
-                  transition: "opacity 0.1s, box-shadow 0.1s",
-                }
+                    background: "var(--primary)",
+                    opacity: dotAlpha,
+                    boxShadow: `0 0 6px oklch(0.6 0.25 25 / ${dotAlpha * 0.7})`,
+                    transition: "opacity 0.1s, box-shadow 0.1s",
+                  }
                 : { background: "var(--border)" }
             }
           />
