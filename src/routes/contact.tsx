@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, Linkedin, Github, MapPin, ArrowRight, Send } from "lucide-react";
+import { Mail, Linkedin, Github, MapPin, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { SiteShell } from "@/components/SiteShell";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { TextReveal } from "@/components/TextReveal";
 import { PlusIcon } from "@/components/PlusIcon";
 import { hobbies, contact } from "@/lib/site-data";
 import logoImg from "@/assets/logo.png";
@@ -74,13 +75,6 @@ function ContactPage() {
                 </ScrollReveal>
               ))}
             </div>
-            {/* Pagination dots */}
-            <div className="mt-5 flex items-center justify-center gap-2">
-              <span className="h-1.5 w-6 rounded-full bg-primary shadow-[0_0_8px_rgba(255,42,0,0.5)]" />
-              <span className="h-1.5 w-1.5 rounded-full bg-border" />
-              <span className="h-1.5 w-1.5 rounded-full bg-border" />
-              <span className="h-1.5 w-1.5 rounded-full bg-border" />
-            </div>
           </div>
         </div>
       </section>
@@ -90,50 +84,74 @@ function ContactPage() {
       {/* ═══════════════════════════════════════════════════════════
          CONTACT
          ═══════════════════════════════════════════════════════════ */}
-      <section id="contact" className="relative px-6 py-20 md:pl-20 lg:px-10 ambient-red">
-        <ScrollReveal>
-          <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 overflow-hidden rounded-xl glass-card p-8 lg:grid-cols-[1.3fr_1fr] lg:p-12">
-            <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary">Let's Connect</span>
-              <h2 className="mt-3 font-display text-5xl leading-[0.9] tracking-tight">
-                <span className="title-stone block">Let's Build</span>
-                <span className="title-stone block">Something Great</span>
-              </h2>
-              <p className="mt-4 max-w-md text-sm text-muted-foreground">
-                Open to internships, collaborations and exciting opportunities.
-              </p>
+      <section
+        id="contact"
+        className="relative flex min-h-[92vh] items-center overflow-hidden px-6 py-24 md:pl-20 lg:px-10"
+      >
+        {/* Atmospheric backdrop */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_100%,rgba(255,42,0,0.16),transparent_70%)]" />
+          <img
+            src={logoImg}
+            alt=""
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 w-[min(70vw,780px)] -translate-x-1/2 -translate-y-1/2 select-none object-contain opacity-[0.045] blur-[1px]"
+          />
+        </div>
 
-              {/* Contact rows */}
-              <ul className="mt-8 space-y-4">
-                <ContactRow Icon={Mail} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
-                <ContactRow Icon={Linkedin} label="LinkedIn" value={contact.linkedin} href={contact.linkedinUrl} />
-                <ContactRow Icon={Github} label="GitHub" value={contact.github} href={contact.githubUrl} />
-                <ContactRow Icon={MapPin} label="Location" value={contact.location} />
-              </ul>
+        <div className="relative mx-auto w-full max-w-[1400px]">
+          <ScrollReveal>
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary">
+              Let&apos;s Connect
+            </span>
+          </ScrollReveal>
 
-              {/* CTA button */}
-              <motion.a
-                href={`mailto:${contact.email}`}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="mt-8 inline-flex items-center gap-2 bg-primary px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-primary-foreground glow-red-strong transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,42,0,0.6)]"
-              >
-                <Send className="h-3.5 w-3.5" />
+          {/* Oversized editorial headline */}
+          <h2 className="mt-5 font-display text-[clamp(2.75rem,10vw,9rem)] leading-[0.84] tracking-tight">
+            <TextReveal delay={0.05}>
+              <span className="title-stone block">Let&apos;s Build</span>
+            </TextReveal>
+            <TextReveal delay={0.16}>
+              <span className="title-blood block">Something Great</span>
+            </TextReveal>
+          </h2>
+
+          <ScrollReveal delay={0.25}>
+            <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground text-pretty">
+              Open to internships, collaborations and exciting opportunities. If
+              you are building something ambitious, I would love to hear about it.
+            </p>
+          </ScrollReveal>
+
+          {/* Oversized magnetic CTA */}
+          <ScrollReveal delay={0.35}>
+            <motion.a
+              href={`mailto:${contact.email}`}
+              data-magnetic
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 320, damping: 22 }}
+              className="group mt-12 inline-flex items-center gap-5 border border-primary/50 bg-primary/[0.07] px-8 py-6 backdrop-blur-sm transition-colors duration-500 hover:border-primary hover:bg-primary/15 sm:px-12 sm:py-8"
+            >
+              <span className="font-display text-[clamp(1.5rem,4vw,2.75rem)] leading-none tracking-tight text-bone transition-colors group-hover:text-primary">
                 Say Hello
-              </motion.a>
-            </div>
+              </span>
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-500 group-hover:rotate-45 sm:h-14 sm:w-14">
+                <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6" />
+              </span>
+            </motion.a>
+          </ScrollReveal>
 
-            {/* RM Logo watermark */}
-            <div className="relative flex items-center justify-center">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,42,0,0.12),transparent_65%)] blur-2xl" />
-              <img
-                src={logoImg}
-                alt="RM Logo"
-                className="w-64 h-64 object-contain opacity-70 select-none drop-shadow-[0_0_40px_rgba(255,42,0,0.3)]"
-              />
-            </div>
-          </div>
-        </ScrollReveal>
+          {/* Contact detail strip */}
+          <ScrollReveal delay={0.45}>
+            <ul className="mt-16 grid grid-cols-1 gap-x-10 gap-y-6 border-t border-border/50 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+              <ContactRow Icon={Mail} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
+              <ContactRow Icon={Linkedin} label="LinkedIn" value={contact.linkedin} href={contact.linkedinUrl} />
+              <ContactRow Icon={Github} label="GitHub" value={contact.github} href={contact.githubUrl} />
+              <ContactRow Icon={MapPin} label="Location" value={contact.location} />
+            </ul>
+          </ScrollReveal>
+        </div>
       </section>
     </SiteShell>
   );

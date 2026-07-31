@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ReactNode } from "react";
 import { ParticleField } from "@/components/ParticleField";
+import { CustomCursor } from "@/components/CustomCursor";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import logoImg from "@/assets/logo.png";
 
 const topNav = [
@@ -31,6 +33,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <CustomCursor />
+      <ScrollProgress />
+
       {/* Global ambient glow */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,42,0,0.06),transparent_70%)] blur-3xl" />
@@ -63,6 +68,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 <a
                   key={item.label}
                   href={item.to + item.hash}
+                  data-magnetic
                   className={`relative font-mono text-[11px] uppercase tracking-[0.22em] transition-all duration-300 hover:text-primary ${active ? "text-primary" : "text-foreground/60"
                     }`}
                 >
